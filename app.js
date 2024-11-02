@@ -5,7 +5,7 @@ import { MongoClient } from 'mongodb';
 import cors from 'cors';
 
 const app = express();
-const uri = "mongodb://localhost:27017";
+const uri = "mongodb+srv://liamwillis0:liamwillis@cosmocorgi.gbveg.mongodb.net/?retryWrites=true&w=majority&appName=CosmoCorgi";
 const client = new MongoClient(uri);
 
 // Enable CORS for all routes
@@ -68,7 +68,37 @@ app.post('/signup', async (req, res) => {
     }
 });
 
+app.post('/signin', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Input validation
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
+
+        const db = client.db("userDatabase");
+        const usersCollection = db.collection("users");
+
+        // Check if the user exists
+        const user = await usersCollection.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        // Verify password
+        if (user.password !== password) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+        res.status(200).json({ message: "Signed in successfully", userId: user._id });
+    } catch (error) {
+        console.error("Error during sign-in:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
-})
+});

@@ -2,12 +2,12 @@ document.getElementById("signupForm").addEventListener("submit", async function 
     event.preventDefault();
 
     // Collect username, email, and password from user
-    const username = document.getElementById("username").value;
+    const petname = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
     // Prepare the request payload
-    const payload = { username, email, password };
+    const payload = { petname, email, password };
 
     try {
         // Send the data to the server using fetch
