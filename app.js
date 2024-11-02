@@ -29,10 +29,10 @@ connectToDatabase();
 app.post('/signup', async (req, res) => {
     try {
         // Extract user data from the request body
-        const { username, email, password } = req.body;
+        const { petname, email, password } = req.body;
 
         // Validate the input (make sure required fields are present)
-        if (!username || !email || !password) {
+        if (!petname || !email || !password) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
@@ -48,7 +48,7 @@ app.post('/signup', async (req, res) => {
 
         // Define the user document
         const userDocument = {
-            username,
+            petname,
             email,
             password,
             customizations: {
